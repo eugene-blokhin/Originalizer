@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="dataset1">
+		<field name="job" class="ru.blokhin.originalizer.rabotaharvester.entities.Job"/>
+		<field name="string" class="java.lang.String"/>
+	</subDataset>
+	<field name="job" class="ru.blokhin.originalizer.rabotaharvester.entities.Job"/>
+	<field name="similarJobs" class="java.util.List"/>
+	<title>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="0" width="524" height="20"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[The analysis of job ads uniqueness.]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="88" splitType="Stretch">
+			<textField>
+				<reportElement x="54" y="4" width="299" height="21"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{job}.getTitle()]]></textFieldExpression>
+				<anchorNameExpression><![CDATA[$F{job}.getLink()]]></anchorNameExpression>
+			</textField>
+			<textField>
+				<reportElement x="385" y="4" width="167" height="19"/>
+				<textElement textAlignment="Right">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{job}.getSalary()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="385" y="25" width="167" height="20" forecolor="#999999"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{job}.getCity()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="385" y="47" width="167" height="20" forecolor="#999999"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{job}.getMetro()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="27" width="299" height="20" forecolor="#333333"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{job}.getCompany().getTitle()]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="Reference">
+				<reportElement x="4" y="4" width="47" height="18" forecolor="#0033CC"/>
+				<textElement>
+					<font size="12" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["link to"]]></textFieldExpression>
+				<hyperlinkReferenceExpression><![CDATA[$F{job}.getLink()]]></hyperlinkReferenceExpression>
+			</textField>
+			<textField hyperlinkType="Reference">
+				<reportElement x="4" y="26" width="47" height="21" forecolor="#0033CC"/>
+				<textElement>
+					<font size="12" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["link to"]]></textFieldExpression>
+				<hyperlinkReferenceExpression><![CDATA[$F{job}.getCompany().getLink()]]></hyperlinkReferenceExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="117" y="67" width="435" height="21"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical" ignoreWidth="false">
+					<datasetRun subDataset="dataset1">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource((Collection)$F{similarJobs})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="21" width="435">
+						<textField>
+							<reportElement x="166" y="0" width="269" height="20" forecolor="#999999"/>
+							<textElement>
+								<font size="10"/>
+							</textElement>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{string}]]></textFieldExpression>
+						</textField>
+						<textField hyperlinkType="LocalAnchor">
+							<reportElement x="108" y="0" width="54" height="20" forecolor="#0000FF"/>
+							<textElement textAlignment="Right">
+								<font isUnderline="true" isStrikeThrough="false"/>
+							</textElement>
+							<textFieldExpression class="java.lang.String"><![CDATA["This job"]]></textFieldExpression>
+							<hyperlinkAnchorExpression><![CDATA[$F{job}.getLink()]]></hyperlinkAnchorExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<staticText>
+				<reportElement x="499" y="0" width="28" height="20" forecolor="#999999"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Page]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="529" y="0" width="26" height="20" forecolor="#999999"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="322" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[All data taken from http://rabota.ru for non-comercial use.]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

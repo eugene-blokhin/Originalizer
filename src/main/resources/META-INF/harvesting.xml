@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<!--
+	<var-def name="url">
+		http://www.rabota.ru/v3_searchVacancyByParamsResults.html?sf=1000&amp;c=2&amp;p=30&amp;w=C+developer
+	</var-def>
+	<var-def name="numberOfLists">10</var-def>
+	-->
+	<var-def name="nextXPath">//span[text() = 'Вперед']/../@href</var-def>
+	<var-def name="elementXPath">//div[contains(@class, 'vacancy_result')]/div/div</var-def>
+	        
+	<var-def name="jobs">
+		<template>
+			&lt;?xml version="1.0" encoding="utf-8"?&gt;
+			&lt;jobs&gt;
+		</template>
+        <regexp replace="true">
+            <regexp-pattern><![CDATA[[\r\n]]]></regexp-pattern>
+            <regexp-source>
+                <while maxloops="${numberOfLists}" condition="${url.toString().length() != 0}">
+                    <empty>
+                        <var-def name="content">
+                            <html-to-xml advancedxmlescape="false" outputtype="compact" prunetags="script">
+                                <http url="${url}"/>
+                            </html-to-xml>
+                        </var-def>
+                    </empty>
+                    <empty>
+                        <var-def name="url">
+                            <xpath expression="${nextXPath}">
+                                <var name="content"/>
+                            </xpath>
+                        </var-def>
+                    </empty>
+                    <loop item="job">
+                        <list>
+                            <xpath expression="${elementXPath}">
+                                <var name="content"/>
+                            </xpath>
+                        </list>
+                        <body>
+                            <empty>
+                                <var-def name="jlink">
+                                        <xpath expression="/div/div/a/@href">
+                                            <var name="job"/>
+                                        </xpath>
+                                </var-def>
+
+                                <var-def name="jtitle">
+                                    <xpath expression="/div/div/a//text()">
+                                        <var name="job"/>
+                                    </xpath>
+                                </var-def>
+
+                                <var-def name="clink">
+                                        <xpath expression="//p[@class='name_emp']/a/@href">
+                                            <var name="job"/>
+                                        </xpath>
+                                </var-def>
+
+                                <var-def name="ctitle">
+                                    <xpath expression="normalize-space(//p[@class='name_emp']/a/text())">
+                                        <var name="job"/>
+                                    </xpath>
+                                </var-def>
+
+                                <var-def name="city">
+                                    <xpath expression="normalize-space((//div[@class='dat']/span/text())[1])">
+                                        <var name="job"/>
+                                    </xpath>
+                                </var-def>
+
+                                <var-def name="metro">
+                                    <xpath expression="normalize-space((//div[@class='dat']/span/text())[2])">
+                                        <var name="job"/>
+                                    </xpath>
+                                </var-def>
+
+                                <var-def name="salary">
+                                    <xpath expression="(//div[3]/span/text())[1]">
+                                        <var name="job"/>
+                                    </xpath>
+                                </var-def>
+
+                                <var-def name="publishingDate">
+                                    <xpath expression="(//div[3]/span/text())[2]">
+                                        <var name="job"/>
+                                    </xpath>
+                                </var-def>
+                            </empty>
+                            <template>
+                                &lt;job link=&quot;${sys.escapeXml(jlink)}&quot;&gt;
+                                &lt;title&gt;${sys.escapeXml(jtitle)}&lt;/title&gt;
+                                &lt;company link=&quot;${sys.escapeXml(clink)}&quot;&gt;
+                                &lt;title&gt;${ctitle}&lt;/title&gt;
+                                &lt;/company&gt;
+                                &lt;salary&gt;${sys.escapeXml(salary)}&lt;/salary&gt;
+                                &lt;city&gt;${sys.escapeXml(city)}&lt;/city&gt;
+                                &lt;metro&gt;${sys.escapeXml(metro)}&lt;/metro&gt;
+                                &lt;publishingDate&gt;${sys.escapeXml(publishingDate)}&lt;/publishingDate&gt;
+                                &lt;/job&gt;
+                            </template>
+                        </body>
+                    </loop>
+                </while>
+            </regexp-source>
+            <regexp-result><![CDATA[ ]]></regexp-result>
+        </regexp>
+		<template>
+			&lt;/jobs&gt;
+		</template>	
+	</var-def>
+</config>
