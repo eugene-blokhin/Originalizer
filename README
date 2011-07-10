@@ -1,0 +1,15 @@
+Assembling:
+	mvn package assembly:single (you need maven and Java SDK)
+
+Using:
+	java -Dfile.encoding=UTF-8 -cp target\rabota-originalizer-1.0-jar-with-dependencies.jar ru.blokhin.originalizer.App <arguments>
+
+Arguments:
+	java ... <-p=...> [-l=...] [-s=...] [-d=...] [-np=...]
+
+Options:
+        -p      Desired position
+        -l      Location (Could be ST_PETERSBURG or MOSCOW)
+        -s      Desired minimum salary
+        -d      Days from announcement
+        -np     Number of pages to analyze
